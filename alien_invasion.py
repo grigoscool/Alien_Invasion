@@ -12,7 +12,9 @@ class AlienInvasion:
         self.settings = Settings()
 
         # Создает игровое окно
-        self.screen = pygame.display.set_mode((self.settings.screen_widht, self.settings.screen_heighr))
+        self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        self.settings.screen_widht = self.screen.get_rect().width
+        self.settings.screen_heighr = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
