@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Alien(Sprite):
     """Кдасс создания пришельцa"""
 
@@ -26,6 +27,7 @@ class Alien(Sprite):
         screen_rect = self.screen.get_rect()
         if self.rect.right >= screen_rect.right or self.rect.left <= 0:
             return True
+
     def update(self):
        '''Перемещает инопланетный флот'''
        self.x += (self.settings.alien_speed * self.settings.fleet_direction)
