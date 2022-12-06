@@ -8,6 +8,7 @@ from ship import Ship
 from bullet import Bullet
 from alien import Alien
 from button import Button
+from scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -24,8 +25,12 @@ class AlienInvasion:
         self.settings.screen_height = self.screen.get_rect().height
         pygame.display.set_caption("Alien Invasion")
 
+        # Создание экземпляров
         self.stats = GameStats(self)
+        self.sd = Scoreboard(self)
         self.ship = Ship(self)
+
+        # Создание групп объектов
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
 
@@ -61,6 +66,10 @@ class AlienInvasion:
         """Запускает новую игру при нажатии кнопки Play"""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # сбрасвает настройки до стартовых
+            self.settings.initialize_dinamic_settings()
+            # скрываетс указатель мыши
+            pygame.mouse.set_visible(False)
             # Перед новой игрой запускает очистку статистики
             self.stats.reset_stats()
             self.stats.game_active = True
@@ -146,6 +155,7 @@ class AlienInvasion:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
     def _check_bullet_alien_collisions(self):
         # Проверка попадания в пришельцев
@@ -180,6 +190,8 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            # появляется указатель мышы
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """Проверяет достиг ли пришелец дна"""
@@ -192,11 +204,15 @@ class AlienInvasion:
     def _update_screen(self):
         # При каждом проходе цикла перериросвывать экран
         self.screen.fill(self.settings.bg_color)
+
         # при каждом проходу цикла перерисовывается корабль
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+
+        # Вывод инфы о счете
+        self.sd.show_score()
 
         # Кнопка Play отображается если игра неактивна
         if not self.stats.game_active:

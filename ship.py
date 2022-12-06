@@ -11,7 +11,7 @@ class Ship():
         self.screen_rect = ai_game.screen.get_rect()
 
         # Загружает изображение корабля и получает прямоугольник
-        self.image = pygame.image.load('images/ship_new.png')
+        self.image = pygame.image.load('images/ship_new1.png')
         self.rect = self.image.get_rect()
         # Каждый новый корабль появляется у нижнего края экрана.
         self.rect.midbottom = self.screen_rect.midbottom
