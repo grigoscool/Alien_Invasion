@@ -10,6 +10,7 @@ class Settings():
 
         # Настройка скорости корабля
         self.ship_limit = 3
+        self.ship_speed = 1.5
 
         # Параметры снаряда
         self.bullet_weight = 300
@@ -22,20 +23,24 @@ class Settings():
 
 
         # Темп ускорения игры
-        self.speedup_scale = 1.5
+        self.speedup_scale = 1.1
+
+        # Темп роста стоимости сбитых пришельце
+        self.score_scale = 1.5
 
         self.initialize_dinamic_settings()
 
     def initialize_dinamic_settings(self):
         """Инициализирует настройки, меняющиеся во время игры"""
         self.alien_speed = 1.5
-        self.ship_speed = 1.5
         self.bullet_speed = 3.0
         # 1 движение флота вправо, -1 влево
         self.fleet_direction = 1
+        self.alien_point = 50
 
     def increase_speed(self):
         """Увеличивает скорость игры"""
         self.alien_speed *= self.speedup_scale
         self.ship_speed *= self.speedup_scale
         self.bullet_speed *= self.speedup_scale
+        self.alien_point = int(self.alien_point * self.score_scale)

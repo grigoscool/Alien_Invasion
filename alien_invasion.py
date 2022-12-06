@@ -73,6 +73,8 @@ class AlienInvasion:
             # Перед новой игрой запускает очистку статистики
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sd.prep_score()
+            self.sd.prep_level()
             # Перед новой игрой очищает флот и снаряды и возвращает корабль в центр
             self.aliens.empty()
             self.bullets.empty()
@@ -157,10 +159,19 @@ class AlienInvasion:
             self._create_fleet()
             self.settings.increase_speed()
 
+            # Увеличение уровня
+            self.stats.level += 1
+            self.sd.prep_level()
+
     def _check_bullet_alien_collisions(self):
         # Проверка попадания в пришельцев
         # При попадании снаряда убираем снаряд и пришельца
-        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, False, True)
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if collisions:
+            for alien in collisions.values():
+                self.stats.score += self.settings.alien_point * len(alien)
+                self.sd.prep_score()
+                self.sd.check_high_score()
 
     def _update_aliens(self):
         '''Обновлет положение пришельцев'''
