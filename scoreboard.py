@@ -38,9 +38,11 @@ class Scoreboard():
 
     def prep_high_score(self):
         """Выводит рекордный счет"""
-        rounded_high_score = round(self.stats.high_score, -1)
-        high_score_str = str("{:,}".format(rounded_high_score))
-        self.high_score_image = self.font.render(high_score_str, True,
+        with open('high_score_ai.txt', 'r', encoding='utf-8') as file:
+            high_score = file.readline()
+            rounded_high_score = round(int(high_score), -1)
+            high_score_str = str("{:,}".format(rounded_high_score))
+            self.high_score_image = self.font.render(high_score_str, True,
                                             self.text_color, self.settings.bg_color)
 
         # Вывод рекордного счета в верхнем левом углу экрана
@@ -69,9 +71,15 @@ class Scoreboard():
 
     def check_high_score(self):
         """Проверяет результат на рекордность"""
-        if self.stats.score > self.stats.high_score:
+        x = open('high_score_ai.txt', 'r')
+        if self.stats.score > int(x.readline()):
             self.stats.high_score = self.stats.score
-            self.prep_high_score()
+        x.close()
+        y = open('high_score_ai.txt', 'w')
+        y.write(str(self.stats.high_score))
+        y.close()
+
+        self.prep_high_score()
 
     def show_score(self):
         """Выводит счет на экран"""

@@ -10,7 +10,9 @@ class GameStats():
         self.game_active = False
 
         # Рекорд
-        self.high_score = 0
+        x = open('high_score_ai.txt', 'r')
+        self.high_score = int(x.readline())
+        x.close()
         # Уровень игры
         self.level = 1
 
