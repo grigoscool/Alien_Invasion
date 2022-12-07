@@ -73,14 +73,25 @@ class AlienInvasion:
             # Перед новой игрой запускает очистку статистики
             self.stats.reset_stats()
             self.stats.game_active = True
-            self.sd.prep_score()
-            self.sd.prep_level()
-            self.sd.prep_ships()
-            # Перед новой игрой очищает флот и снаряды и возвращает корабль в центр
-            self.aliens.empty()
-            self.bullets.empty()
-            self._create_fleet()
-            self.ship.center_ship()
+
+            self.prep_stats()
+
+            self.clean_screen()
+
+
+
+    def prep_stats(self):
+        """Выводит статистику текущей игры"""
+        self.sd.prep_score()
+        self.sd.prep_level()
+        self.sd.prep_ships()
+
+    def clean_screen(self):
+        """Перед новой игрой очищает флот и снаряды и возвращает корабль в центр"""
+        self.aliens.empty()
+        self.bullets.empty()
+        self.ship.center_ship()
+        self._create_fleet()
 
     def _check_keydown_events(self, event):
         '''Реагирует на нажатие клавиш'''
